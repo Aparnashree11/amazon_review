@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.log
+*.pickle
+*.pkl
+
+# Virtual environments
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data files
+/data/*.csv
+/data/*.xlsx
+/data/*.json
+/data/*.parquet
+
+# Model directories
+/models/
+!models/.gitkeep  # keep folder structure in git
+
+# Hugging Face cache
+~/.cache/huggingface/
+huggingface_cache/
+
+# Streamlit cache
+.streamlit/
+.cache/
+**/.ipy**
+
+# Logs
+/logs/
+!logs/.gitkeep
