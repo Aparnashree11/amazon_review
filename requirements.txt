@@ -9,3 +9,4 @@ streamlit
 numpy
 matplotlib
 protobuf<4.0
+requests
