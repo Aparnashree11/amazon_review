@@ -18,7 +18,6 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN mkdir -p models/distilbert-final
 # Copy project files
 COPY . .
 
@@ -26,6 +25,4 @@ COPY . .
 EXPOSE 8501
 
 # Set the command to start script
-COPY start.sh .
-RUN chmod +x start.sh
-CMD ["./start.sh"]
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.enableCORS=false"]

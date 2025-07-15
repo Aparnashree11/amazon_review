@@ -12,7 +12,7 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 def load_model():
     model_path = "./models/distilbert-final/"
     model = AutoModelForSequenceClassification.from_pretrained(model_path)
-    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
     model.eval()
     return model, tokenizer
 
