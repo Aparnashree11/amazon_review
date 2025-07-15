@@ -17,12 +17,6 @@ env.bak/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Data files
-/data/*.csv
-/data/*.xlsx
-/data/*.json
-/data/*.parquet
-
 # Model directories
 /models/
 !models/.gitkeep  # keep folder structure in git

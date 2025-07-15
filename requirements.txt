@@ -6,3 +6,6 @@ matplotlib
 seaborn
 torch
 streamlit
+numpy
+matplotlib
+protobuf<4.0

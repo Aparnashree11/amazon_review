@@ -5,15 +5,26 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 # Load model and tokenizer
-model_path = "../models/distilbert-final/"
-model = AutoModelForSequenceClassification.from_pretrained(model_path)
-tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
-model.eval()
+@st.cache_resource
+def load_model():
+    model_path = "./models/distilbert-final/"
+    model = AutoModelForSequenceClassification.from_pretrained(model_path)
+    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+    model.eval()
+    return model, tokenizer
+
+model, tokenizer = load_model()
 
 # Load cleaned test data
-test_df = pd.read_csv("../data/cleaned_data.csv").sample(500)
+@st.cache_data
+def load_test_data():
+    test_df = pd.read_csv("./data/cleaned_data.csv").sample(500)
+    return test_df
+
+test_df = load_test_data()
 texts = test_df["content"].tolist()
 true_labels = test_df["label"].tolist()
 
@@ -26,13 +37,13 @@ def predict_sentiment(text):
     return prediction
 
 # Predict on test set for accuracy
-predictions = []
-for text in texts:
-    predictions.append(predict_sentiment(text))
+@st.cache_data
+def get_predictions(texts):
+    return [predict_sentiment(text) for text in texts]
+
+predictions = get_predictions(texts)
 
 # Compute metrics
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-
 acc = accuracy_score(true_labels, predictions)
 prec, rec, f1, _ = precision_recall_fscore_support(true_labels, predictions, average='binary')
 
@@ -57,10 +68,11 @@ st.pyplot(fig)
 
 # Misclassified examples
 st.subheader("Sample Misclassified Reviews")
-misclassified = []
-for text, true, pred in zip(texts, true_labels, predictions):
-    if true != pred:
-        misclassified.append((text, true, pred))
+misclassified = [
+    (text, true, pred)
+    for text, true, pred in zip(texts, true_labels, predictions)
+    if true != pred
+]
 
 for text, true, pred in misclassified[:3]:
     st.write(f"> *{text[:300]}...*")
@@ -68,10 +80,10 @@ for text, true, pred in misclassified[:3]:
     st.write("---")
 
 # User input
-st.subheader("🎯 Predict Sentiment for Your Review")
+st.subheader("Predict Sentiment for Your Review")
 user_input = st.text_area("Enter your Amazon product review here:")
 
 if st.button("Predict Sentiment"):
     pred = predict_sentiment(user_input)
-    sentiment = "Positive ✅" if pred == 1 else "Negative ❌"
+    sentiment = "Positive" if pred == 1 else "Negative"
     st.success(f"Predicted Sentiment: **{sentiment}**")
