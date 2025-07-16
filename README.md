@@ -1,6 +1,6 @@
 # Sentiment Classification For Amazon Reviews
 
-**Live Demo:** [View on Hugging Face Spaces](https://huggingface.co/spaces/aparnaaaw/amazon_review)
+**App Link:** [View on Hugging Face Spaces](https://huggingface.co/spaces/aparnaaaw/amazon_review)
 
 ---
 
